@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KEEN Flows. Precision, automated.</title>
+<link rel="icon" href="assets/keen-mark.png">
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--kf-bg); color: var(--kf-fg); }
+  body { font-family: var(--kf-font-body); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  @keyframes kfFadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes kfFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes kfPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+  a { color: inherit; }
+  html { scroll-behavior: smooth; }
+  ::selection { background: var(--kf-brand); color: var(--kf-bg); }
+
+  /* Grain intensity */
+  body[data-grain="off"] [data-grain-layer] { opacity: 0 !important; }
+  body[data-grain="heavy"] [data-grain-layer] { opacity: 0.10 !important; }
+
+  /* Midnight mood */
+  body[data-mood="midnight"] {
+    --kf-gradient: linear-gradient(135deg, #4F2DC9 0%, #2B7FE8 100%);
+    --kf-brand: #6B5BD6; --kf-sky: #8B7CE8; --kf-royal: #2D1B7B;
+    --kf-bg: #ECEAE4; --kf-surface-2: #E2DFD8;
+  }
+</style>
+</head>
+<body data-mood="midnight" data-grain="heavy">
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="components/Buttons.jsx"></script>
+<script type="text/babel" src="components/Nav.jsx"></script>
+<script type="text/babel" src="components/Hero.jsx"></script>
+<script type="text/babel" src="components/HowItWorks.jsx"></script>
+<script type="text/babel" src="components/WhatYouGet.jsx"></script>
+<script type="text/babel" src="components/FounderNote.jsx"></script>
+<script type="text/babel" src="components/Stats.jsx"></script>
+<script type="text/babel" src="components/CTASection.jsx"></script>
+<script type="text/babel" src="components/Footer.jsx"></script>
+<script type="text/babel" src="components/WaitlistModal.jsx"></script>
+
+<script type="text/babel">
+const { useState } = React;
+
+const HERO_HEADLINE = ['The work between', 'the conversation', 'and the close ', 'handled.'];
+
+const CTA_DATA = {
+  eyebrow: 'A small roster. Real outcomes.',
+  h: ['Find the moment', 'you\'re losing.', 'Get it back.'],
+  sub: 'Twenty minutes on a call. Seven days of building. The result speaks for itself or it doesn\'t. and that\'s the point.',
+};
+
+function App() {
+  const [modal, setModal] = useState(false);
+  const open = () => setModal(true);
+  const close = () => setModal(false);
+
+  return (
+    <div>
+      <Nav onBookCall={open} ctaLabel="Join Waitlist" navStyle="minimal" />
+      <Hero
+        kicker="AUTOMATION IS READY FOR YOU"
+        headline={HERO_HEADLINE}
+        align="left"
+        showSignals={true}
+        ctaLabel="Join Waitlist"
+        onPrimary={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+        onSecondary={open}
+      />
+      <HowItWorks />
+      <WhatYouGet />
+      <FounderNote />
+      <Stats />
+      <CTASection onBookCall={open} ctaData={CTA_DATA} ctaLabel="Join Waitlist" />
+      <Footer status="ROSTER OPEN. TWO SLOTS THIS QUARTER" showDot={true} />
+      <WaitlistModal open={modal} onClose={close} />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
